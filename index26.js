@@ -45,7 +45,7 @@ const cardContent = (taskData) => {
  const date = new Date(parseInt(taskData.id));
  return ` <div id=${taskData.id}>
   <img
-  src = ${taskData.imageUrl}
+  src = ${taskData.imageUrl || `https://analyticsinsight.b-cdn.net/wp-content/uploads/2020/03/integrated-robotics-cover-848w477h.jpg` }
   alt = "bg image"
   class = "img-fluid place__holder__image mb-3"
   />
@@ -211,4 +211,21 @@ const saveEditchanges = (event) => {
   taskType.setAttribute("contenteditable", "false");
   submitButton.removeAttribute("onclick");
   submitButton.innerHTML = "Open Task";
+};
+
+const searchTask = (event) => {
+
+  if (!event) event = window.event;
+
+  while (taskContainer.firstChild) {
+    taskContainer.removeChild(taskContainer.firstChild);
+  }
+
+  const resultData = globalStore.filter(({taskTitle}) =>
+    taskTitle.includes(event.target.value)
+  );
+
+  resultData.map((taskData) => {
+    taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
+  });
 };
