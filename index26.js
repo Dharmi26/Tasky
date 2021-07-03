@@ -1,4 +1,5 @@
 const taskContainer = document.querySelector(".task__container");
+const taskModal = document.querySelector(".task__modal__body");
 
 let globalStore = [];
 
@@ -27,13 +28,33 @@ const generateNewCard = (taskData) => `
     <a href="#" class="btn btn-secondary">${taskData.taskType}</a>
   </div>
   <div class="card-footer">
-    <button type="button" id=${taskData.id} class="btn btn-outline-dark float-end">
+    <button type="button" id=${taskData.id}
+      data-bs-toggle="modal"
+      data-bs-target="#showTask"
+      onclick="openCard.apply(this, arguments)"
+      class="btn btn-outline-dark float-end">
       Open Task
     </button>
   </div>
 </div>
 </div>
 `;
+
+// Open card Modal
+const cardContent = (taskData) => {
+ const date = new Date(parseInt(taskData.id));
+ return ` <div id=${taskData.id}>
+  <img
+  src = ${taskData.imageUrl}
+  alt = "bg image"
+  class = "img-fluid place__holder__image mb-3"
+  />
+  <strong class="text-sm text-muted">Created on ${date.toDateString()}</strong>
+  <h2 class="my-3">${taskData.taskTitle}</h2>
+  <p class="lead">
+  ${taskData.taskDescription}
+  </p></div>`;
+};
 
 const loadInitialCardData = () => {
   //localstorage to get tasky card taskData
@@ -72,8 +93,31 @@ const saveChanges = () => {
 
 };
 
+//Open Card
+const openCard = (event) => {
+
+     if (!event)
+      event = window.event;
+     //ID
+      const targetID = event.target.id;
+
+      const taskData = {
+        id: `${Date.now()}`, // unique number for id
+        imageUrl: document.getElementById("imageurl").value,
+        taskTitle: document.getElementById("tasktitle").value,
+        taskType: document.getElementById("tasktype").value,
+        taskDescription: document.getElementById("taskdescription").value,
+        };
+
+  const getTask = globalStore.filter((taskData) => taskData.id === targetID);
+
+  taskModal.innerHTML = cardContent(getTask[0]);
+
+};
+
 //Delete feature
 const deleteCard = (event) => {
+
   event = window.event;
   //ID
     const targetID = event.target.id;
@@ -88,10 +132,9 @@ const deleteCard = (event) => {
  //contact parentNode
     if (tagname === "BUTTON"){
      return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode);
-   }else{
+   } else {
      return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);
    }
-
 };
 
 //Edit feature
