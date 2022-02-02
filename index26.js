@@ -117,26 +117,24 @@ const openCard = (event) => {
 
 //Delete feature
 const deleteCard = (event) => {
-
   event = window.event;
-  //ID
-    const targetID = event.target.id;
-    const tagname = event.target.tagName; //BUTTON
+  // id
+  const targetID = event.target.id;
+  const tagname = event.target.tagName; // BUTTON
+  // match the id of the element with the id inside the globalStore
+  // if match found remove
 
-    globalStore = globalStore.filter((cardObject) => {
-       cardObject.id !== targetID
-     });
+  globalStore = globalStore.filter((cardObject) => cardObject.id !== targetID);
+  localStorage.setItem("tasky", JSON.stringify({cards:globalStore})); // an object
+  // contact parent
 
-  localStorage.setItem("tasky", JSON.stringify({cards:globalStore}));
+  if(tagname === "BUTTON"){
+    return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode);
+  }else{
+    return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);
+  }
 
- //contact parentNode
-    if (tagname === "BUTTON"){
-     return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode);
-   } else {
-     return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);
-   }
 };
-
 //Edit feature
 const editCard = (event) => {
   event = window.event;
