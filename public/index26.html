@@ -209,5 +209,28 @@
 
     <!-- Our JavaScript File -->
     <script src="index26.js"></script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.5/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.5/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAxnk56QEHiFPoiPkVubJCXB6jg-dAygEI",
+    authDomain: "tasky-53294.firebaseapp.com",
+    projectId: "tasky-53294",
+    storageBucket: "tasky-53294.appspot.com",
+    messagingSenderId: "451920713517",
+    appId: "1:451920713517:web:efc96917bbb777d82a65a4",
+    measurementId: "G-XSXX46T3QE"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   </body>
 </html>
