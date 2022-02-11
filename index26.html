@@ -4,15 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <!-- Font -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      href="https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic"
       rel="stylesheet"
     />
-
-    <!-- Fontawesome -->
+    <!-- FontAwesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -20,7 +17,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
@@ -28,13 +24,11 @@
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
-
     <!-- Our CSS -->
-    <link rel="stylesheet" href="styles.css" />
-
+    <link rel="stylesheet" href="style26.css" />
     <title>Tasky</title>
   </head>
-  <body onload="loadInitialTaskCards()">
+  <body onload = "loadInitialCardData()">
     <!-- Modal -->
     <div
       class="modal fade"
@@ -44,7 +38,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content gradient-y">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
             <button
@@ -61,7 +55,8 @@
                 type="url"
                 class="form-control"
                 id="imageurl"
-                placeholder="https://images.hello.com/hello.jpg"
+                aria-describedby="Image url"
+                placeholder="https://example.com/hello.jpg"
               />
             </div>
             <div class="mb-3">
@@ -70,7 +65,8 @@
                 type="text"
                 class="form-control"
                 id="tasktitle"
-                placeholder="API Integration"
+                aria-describedby="Task title"
+                placeholder="eg: API Integration"
               />
             </div>
             <div class="mb-3">
@@ -79,7 +75,8 @@
                 type="text"
                 class="form-control"
                 id="tasktype"
-                placeholder="development"
+                aria-describedby="Task type"
+                placeholder="eg: work"
               />
             </div>
             <div class="mb-3">
@@ -90,7 +87,8 @@
                 rows="6"
                 class="form-control"
                 id="taskdescription"
-                placeholder="Building an amazing API!"
+                aria-describedby="Task type"
+                placeholder="Write here something about your Task..."
               ></textarea>
             </div>
           </div>
@@ -104,9 +102,9 @@
             </button>
             <button
               type="button"
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
+              class="btn btn-secondary"
               onclick="saveChanges()"
+              data-bs-dismiss="modal"
             >
               Save changes
             </button>
@@ -114,13 +112,33 @@
         </div>
       </div>
     </div>
-
+<!-- Open task -->
+    <div
+        class="modal fade"
+        id="showTask"
+        tabindex="-1"
+        aria-labelledby="showTaskLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-body task__modal__body"></div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <div class="container-fluid">
-        <h1 class="navbar-brand fw-bold">
-          <a href="#" contenteditable="true">Tasky</a>
-        </h1>
+        <a class="navbar-brand fw-bold text-info" href="#">Tasky</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -139,39 +157,37 @@
             </li>
           </ul>
           <button
-            type="button"
-            class="btn btn-primary"
+            class="btn btn-outline-info"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-          >
+           >
             <i class="fas fa-plus"></i> Add New
           </button>
         </div>
       </div>
     </nav>
+    <!-- Container -->
     <div class="container">
-      <!-- Search bar -->
-      <section class="mt-5">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <div class="input-group mb-3 shadow">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search Task"
-                aria-label="Search Task"
-                aria-describedby="basic-addon2"
-              />
-              <span class="input-group-text" id="basic-addon2"
-                ><i class="fas fa-search"></i
-              ></span>
-            </div>
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+          <div class="input-group mb-3 shadow">
+            <input
+              type="text"
+              class="form-control"
+              onchange="searchTask.apply(this, arguments)"
+              placeholder="Search task"
+              aria-label="Search task"
+              aria-describedby="basic-addon2"
+            />
+            <span class="input-group-text" id="basic-addon2"
+              ><i class="fas fa-search"></i
+            ></span>
           </div>
         </div>
-      </section>
-
+      </div>
+      <!-- Cards -->
       <section>
-        <div class="row task__container"></div>
+        <div class="row task__container mt-5 mb-4"></div>
       </section>
     </div>
     <!-- JavaScript Bundle with Popper -->
@@ -180,8 +196,7 @@
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
       crossorigin="anonymous"
     ></script>
-
-    <!-- Our Js file -->
-    <script src="index.js"></script>
+    <!-- Our JavaScript File -->
+    <script src="index26.js"></script>
   </body>
 </html>
